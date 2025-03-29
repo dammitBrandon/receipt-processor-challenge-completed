@@ -2,7 +2,7 @@
   "name": "receipt-processor-challenge",
   "version": "1.0.0",
   "description": "backend api take home assessment",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/dammitBrandon/receipt-processor-challenge/issues"
   },
-  "homepage": "https://github.com/dammitBrandon/receipt-processor-challenge#readme"
+  "homepage": "https://github.com/dammitBrandon/receipt-processor-challenge#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "uuid": "^11.1.0"
+  }
 }
