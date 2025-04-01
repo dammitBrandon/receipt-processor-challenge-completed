@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const moment = require('moment');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
@@ -52,6 +53,7 @@ function calculateReceiptPoints(receiptBody) {
     totalPoints += calculateRetailerNamePoints(receiptBody);
     totalPoints += calculateRetailerTotalPoints(receiptBody);
     totalPoints += calculateRetailerItemsPoints(receiptBody);
+    totalPoints += calculateRetailerItemDescriptionPoints(receiptBody);
     totalPoints += calculateRetailerDateTimePoints(receiptBody);
 
     return totalPoints;
@@ -59,18 +61,27 @@ function calculateReceiptPoints(receiptBody) {
 
 function calculateRetailerNamePoints(receiptBody) {
     console.log('calculateReceiptPoints');
-    return receiptBody.retailer.length
+    let nameTotalPoints = 0;
+    const alphaNumericRegex = /[a-zA-Z0-9]/g;
+
+    nameTotalPoints += receiptBody.retailer.match(alphaNumericRegex).length;
+    console.log('calculateRetailerNamePoints, nameTotalPoints: ', nameTotalPoints);
+
+    return nameTotalPoints;
 }
 
 function calculateRetailerTotalPoints(receiptBody) {
     console.log('calculateRetailerTotalPoints');
     let itemsTotalPoints = 0;
     if (isRoundDollarAmount(receiptBody.total)) {
-        itemsTotalPoints = 50;
-    } else if (isMultipleOfQuarter(receiptBody.total)) {
-        itemsTotalPoints = 25;
+        itemsTotalPoints += 50;
     }
 
+    if (isMultipleOfQuarter(receiptBody.total)) {
+        itemsTotalPoints += 25;
+    }
+
+    console.log('calculateRetailerTotalPoints, itemsTotalPoints: ', itemsTotalPoints);
     return itemsTotalPoints;
 }
 
@@ -84,13 +95,56 @@ function calculateRetailerItemsPoints(receiptBody) {
          itemsTotalPoints = ((numberOfItems - 1) / 2) * 5;
      }
 
+    console.log('calculateRetailerItemsPoints, itemsTotalPoints: ', itemsTotalPoints);
+
     return itemsTotalPoints;
+}
+
+function calculateRetailerItemDescriptionPoints(receiptBody) {
+    console.log('calculateRetailerItemDescriptionPoints');
+    let itemDescriptionPoints = 0;
+
+    receiptBody.items.forEach((item) => {
+        if (item.shortDescription.trim().length % 3 === 0) {
+            let itemPricePoints = Math.ceil(item.price * 0.2);
+            itemDescriptionPoints += itemPricePoints;
+        }
+    });
+
+    // let itemsDescriptionPointsSum = receiptBody.items.reduce((sum, currentItem) => {
+    //     return sum + currentItem;
+    // }, 0);
+    //
+    // console.log('calculateRetailerItemDescriptionPoints, itemsDescriptionPointsSum: ');
+    // console.log(itemsDescriptionPointsSum);
+
+    console.log('calculateRetailerItemDescriptionPoints, itemDescriptionPoints: ');
+    console.log(itemDescriptionPoints);
+
+    return itemDescriptionPoints;
 }
 
 function calculateRetailerDateTimePoints(receiptBody) {
     console.log('calculateRetailerDateTimePoints');
     let dateTimeTotalPoints = 0;
 
+    let receiptDate = moment(receiptBody.purchaseDate).date()
+
+    if (receiptDate % 2 !== 0) {
+        console.log('calculateRetailerDateTimePoints, the day in the purchase date is odd, adding 6 points');
+        dateTimeTotalPoints += 6;
+    }
+
+    let receiptTime = moment(receiptBody.purchaseTime, ["HH:mm"]);
+    let hHStartTime = moment("14:00", ["HH:mm"]).format();
+    let hHEndTime = moment("16:00", ["HH:mm"]).format();
+
+    if (receiptTime.isBetween(hHStartTime, hHEndTime)) {
+        console.log('calculateRetailerDateTimePoints, time of purchase is after 2:00pm and before 4:00pm, adding 10 points');
+        dateTimeTotalPoints += 10;
+    }
+
+    console.log('calculateRetailerDateTimePoints, dateTimeTotalPoints: ', dateTimeTotalPoints);
     return dateTimeTotalPoints;
 }
 
