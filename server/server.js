@@ -50,7 +50,9 @@ function calculateReceiptPoints(receiptBody) {
     let totalPoints = 0;
 
     totalPoints += calculateRetailerNamePoints(receiptBody);
-    totalPoints += calculateRetailerItemsTotalPoints(receiptBody);
+    totalPoints += calculateRetailerTotalPoints(receiptBody);
+    totalPoints += calculateRetailerItemsPoints(receiptBody);
+    totalPoints += calculateRetailerDateTimePoints(receiptBody);
 
     return totalPoints;
 };
@@ -60,8 +62,8 @@ function calculateRetailerNamePoints(receiptBody) {
     return receiptBody.retailer.length
 }
 
-function calculateRetailerItemsTotalPoints(receiptBody) {
-    console.log('calculateRetailerItemsTotalPoints');
+function calculateRetailerTotalPoints(receiptBody) {
+    console.log('calculateRetailerTotalPoints');
     let itemsTotalPoints = 0;
     if (isRoundDollarAmount(receiptBody.total)) {
         itemsTotalPoints = 50;
@@ -70,6 +72,26 @@ function calculateRetailerItemsTotalPoints(receiptBody) {
     }
 
     return itemsTotalPoints;
+}
+
+function calculateRetailerItemsPoints(receiptBody) {
+    console.log('calculateRetailerItemsPoints');
+    let itemsTotalPoints = 0;
+    let numberOfItems = receiptBody.items.length;
+     if (numberOfItems % 2 === 0) {
+         itemsTotalPoints = (numberOfItems / 2) * 5;
+     } else {
+         itemsTotalPoints = ((numberOfItems - 1) / 2) * 5;
+     }
+
+    return itemsTotalPoints;
+}
+
+function calculateRetailerDateTimePoints(receiptBody) {
+    console.log('calculateRetailerDateTimePoints');
+    let dateTimeTotalPoints = 0;
+
+    return dateTimeTotalPoints;
 }
 
 function isRoundDollarAmount(totalPointsNumber) {
