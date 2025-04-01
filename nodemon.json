@@ -1,0 +1,7 @@
+{
+  "ignore": [
+    "node_modules/"
+  ],
+  "watch": ["sever/"],
+  "verbose": true
+}
