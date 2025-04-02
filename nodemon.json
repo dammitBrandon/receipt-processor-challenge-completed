@@ -2,6 +2,6 @@
   "ignore": [
     "node_modules/"
   ],
-  "watch": ["sever/"],
+  "watch": ["sever/**"],
   "verbose": true
 }
