@@ -1,7 +1,6 @@
 const moment = require("moment/moment");
 
 const calculateReceiptPoints = function (receiptBody) {
-    console.log('calculateReceiptPoints');
     let totalPoints = 0;
 
     totalPoints += calculateRetailerNamePoints(receiptBody);
@@ -14,7 +13,6 @@ const calculateReceiptPoints = function (receiptBody) {
 };
 
 function calculateRetailerNamePoints(receiptBody) {
-    console.log('calculateReceiptPoints');
     let nameTotalPoints = 0;
     const alphaNumericRegex = /[a-zA-Z0-9]/g;
 
@@ -24,7 +22,6 @@ function calculateRetailerNamePoints(receiptBody) {
 }
 
 function calculateRetailerTotalPoints(receiptBody) {
-    console.log('calculateRetailerTotalPoints');
     let itemsTotalPoints = 0;
     if (isRoundDollarAmount(receiptBody.total)) {
         itemsTotalPoints += 50;
@@ -38,7 +35,6 @@ function calculateRetailerTotalPoints(receiptBody) {
 }
 
 function calculateRetailerItemsPoints(receiptBody) {
-    console.log('calculateRetailerItemsPoints');
     let itemsTotalPoints = 0;
     let numberOfItems = receiptBody.items.length;
     if (numberOfItems % 2 === 0) {
@@ -51,7 +47,6 @@ function calculateRetailerItemsPoints(receiptBody) {
 }
 
 function calculateRetailerItemDescriptionPoints(receiptBody) {
-    console.log('calculateRetailerItemDescriptionPoints');
     let itemDescriptionPoints = 0;
 
     receiptBody.items.forEach((item) => {
@@ -65,7 +60,6 @@ function calculateRetailerItemDescriptionPoints(receiptBody) {
 }
 
 function calculateRetailerDateTimePoints(receiptBody) {
-    console.log('calculateRetailerDateTimePoints');
     let dateTimeTotalPoints = 0;
 
     let receiptDateDay = moment(receiptBody.purchaseDate).date()

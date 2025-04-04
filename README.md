@@ -1,3 +1,15 @@
+# Receipt Processor: Up and Running
+docker build .
+docker run -p 3000:3000 [docker_image_id]
+
+
+
+
+
+
+
+
+
 # Receipt Processor
 
 Build a webservice that fulfils the documented API. The API is described below. A formal definition is provided 

@@ -5,7 +5,6 @@ const InMemoryDb = require('../data-store/in-memory-db');
 const {calculateReceiptPoints} = require('../utils');
 
 const processReceipt = async (req, res, next) => {
-    console.log('processReceipt');
     const receiptBody = req.body;
 
     try {
@@ -18,7 +17,6 @@ const processReceipt = async (req, res, next) => {
 }
 
 const getReceipt = async (req, res, next) => {
-    console.log('getReceipt');
 
     try {
         const receiptId = req.params.receiptId;
