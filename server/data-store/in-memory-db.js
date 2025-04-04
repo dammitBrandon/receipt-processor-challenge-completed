@@ -8,9 +8,8 @@ class InMemoryDb {
     constructor(singletonToken) {
         if (_singleton !== singletonToken) {
             throw new Error('Cannot instantiate InMemoryDb directly');
-
-            this._receiptsCollection = new Map();
         }
+        this._receiptsCollection = new Map();
     }
 
     static get instance() {
@@ -21,9 +20,23 @@ class InMemoryDb {
         return this._singleton;
     }
 
-    createReceiptDoc(receiptBody) {
-        const receiptId = uuidv4();
+    createReceiptDoc(receiptDocBody) {
+        try {
+            const receiptId = uuidv4();
+            this._receiptsCollection.set(receiptId, {'id': receiptId, ...receiptDocBody});
+            return this._receiptsCollection.get(receiptId);
+        } catch (e) {
+            return e;
+        }
     }
 
-    retrieveReceiptDoc(receiptId) {}
+    retrieveReceiptDoc(receiptId) {
+        try {
+            return this._receiptsCollection.get(receiptId)
+        } catch (e) {
+            return e;
+        }
+    }
 }
+
+module.exports = InMemoryDb.instance;
