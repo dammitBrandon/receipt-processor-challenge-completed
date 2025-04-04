@@ -2,7 +2,8 @@
 
 const { Router } = require('express');
 
-const {processReceipt, getReceipt} = require('../services/receipt-service');
+const { receiptSchema, validateRequest } = require('../api/schemas');
+const { processReceipt, getReceipt } = require('../services/receipt-service');
 
 const API = new Router();
 
