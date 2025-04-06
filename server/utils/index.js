@@ -37,6 +37,11 @@ function calculateRetailerTotalPoints(receiptBody) {
 function calculateRetailerItemsPoints(receiptBody) {
     let itemsTotalPoints = 0;
     let numberOfItems = receiptBody.items.length;
+
+    if (numberOfItems === 0) {
+        return 0;
+    }
+
     if (numberOfItems % 2 === 0) {
         itemsTotalPoints = (numberOfItems / 2) * 5;
     } else {
@@ -48,6 +53,10 @@ function calculateRetailerItemsPoints(receiptBody) {
 
 function calculateRetailerItemDescriptionPoints(receiptBody) {
     let itemDescriptionPoints = 0;
+
+    if (receiptBody.items.length === 0) {
+        return 0;
+    }
 
     receiptBody.items.forEach((item) => {
         if (item.shortDescription.trim().length % 3 === 0) {

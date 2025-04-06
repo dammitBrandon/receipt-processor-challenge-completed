@@ -44,4 +44,41 @@ describe('Test basic routes', () => {
         expect(response.body).toHaveProperty('id');
         expect(response.body.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
     });
+
+    test('GET /receipts/:receiptId/points, should return 109 points', async () => {
+        const receipt = {
+            "retailer": "M&M Corner Market",
+            "purchaseDate": "2022-03-20",
+            "purchaseTime": "14:33",
+            "items": [
+                {
+                    "shortDescription": "Gatorade",
+                    "price": "2.25"
+                },{
+                    "shortDescription": "Gatorade",
+                    "price": "2.25"
+                },{
+                    "shortDescription": "Gatorade",
+                    "price": "2.25"
+                },{
+                    "shortDescription": "Gatorade",
+                    "price": "2.25"
+                }
+            ],
+            "total": "9.00"
+        };
+
+        const receiptResponse = await request(app)
+            .post('/receipts/process')
+            .send(receipt)
+            .expect(201);
+
+        const receiptId = receiptResponse.body.id;
+
+        const response = await request(app).get(`/receipts/${receiptId}/points`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual({ points: 109 });
+        expect(response.body.points).toEqual(109);
+    })
 });
