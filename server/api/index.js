@@ -14,6 +14,6 @@ API.get('/status', (req, res) => {
 
 API.get('/receipts/:receiptId/points', getReceipt);
 
-API.post('/receipts/process', processReceipt);
+API.post('/receipts/process', validateRequest(receiptSchema), processReceipt);
 
 module.exports = API;
