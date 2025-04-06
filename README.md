@@ -1,7 +1,7 @@
 # Receipt Processor: Up and Running
 docker build .
 docker run -p 3000:3000 [docker_image_id]
-
+run curl localhost:3000/status to verify
 
 
 
